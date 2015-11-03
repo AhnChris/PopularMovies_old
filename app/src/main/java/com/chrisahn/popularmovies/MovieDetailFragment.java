@@ -1,6 +1,5 @@
 package com.chrisahn.popularmovies;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
     private MovieInfoContainer mMovieInfoContainer;
 

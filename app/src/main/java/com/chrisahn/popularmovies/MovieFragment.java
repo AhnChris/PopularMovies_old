@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class MovieFragment extends android.app.Fragment {
+public class MovieFragment extends android.support.v4.app.Fragment {
 
     public  static final String MOVIE_DATA = "MOVIE_DATA";
     private MovieAdapter mMovieAdapter;

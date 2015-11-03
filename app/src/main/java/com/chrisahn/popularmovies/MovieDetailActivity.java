@@ -20,7 +20,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         movieDetailFragment.setArguments(bundle);
 
-        getFragmentManager().beginTransaction().add(R.id.container_detail, movieDetailFragment)
+        getSupportFragmentManager().beginTransaction().add(R.id.container_detail, movieDetailFragment)
                 .commit();
 
 
