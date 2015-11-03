@@ -47,6 +47,8 @@ public class MovieFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // clear existing items to not have duplicates after screen rotations
+        menu.clear();
         // inflate the menu layout
         inflater.inflate(R.menu.movie_fragment_menu, menu);
         // get the menu spinner item
