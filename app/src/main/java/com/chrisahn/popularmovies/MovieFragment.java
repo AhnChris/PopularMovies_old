@@ -118,7 +118,8 @@ public class MovieFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onStart() {
-        updateMovie(0);
+        // Possibly causing a lot of network traffic here
+        //updateMovie(0);
         super.onStart();
     }
 
