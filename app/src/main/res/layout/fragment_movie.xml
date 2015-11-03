@@ -1,0 +1,19 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MovieFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<GridView
+    android:id="@+id/movieGrid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_centerInParent="true"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="@dimen/activity_zero"
+    android:horizontalSpacing="@dimen/activity_zero"
+    android:stretchMode="columnWidth" />
+
+</LinearLayout>

@@ -1,0 +1,71 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context="com.chrisahn.popularmovies.MovieDetailFragment"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" >
+<RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Mad Max Fury Road"
+        android:id="@+id/movieTitleView"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/Turqoise"
+        android:textColor="#FFFFFFFF"
+        android:minHeight="100dp"
+        android:textSize="30dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="45dp"
+        />
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="180dp"
+        android:id="@+id/posterImageView"
+        android:src="@drawable/error_image2"
+        android:adjustViewBounds="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="fitStart"
+        android:layout_below="@+id/movieTitleView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="2015-10-04"
+        android:id="@+id/releaseDateView"
+        android:layout_alignTop="@+id/posterImageView"
+        android:layout_toRightOf="@+id/posterImageView"
+        android:layout_toEndOf="@+id/posterImageView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="8/10"
+        android:layout_below="@+id/releaseDateView"
+        android:layout_alignLeft="@+id/releaseDateView"
+        android:layout_alignStart="@+id/releaseDateView"
+        android:id="@+id/voteAverageView"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Testing"
+        android:id="@+id/plotView"
+        android:layout_below="@+id/posterImageView"
+        android:layout_alignLeft="@+id/posterImageView"
+        android:layout_alignStart="@+id/posterImageView"
+        android:layout_marginTop="32dp"
+        android:textSize="14dp"/>
+
+</RelativeLayout>
+</ScrollView>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+
+    <!-- Menu -->
+    <string name="action_settings">Settings</string>
+
+    <!-- Sort Spinner values -->
+    <string-array name="sort_options">
+        <item>Most Popular</item>
+        <item>Highest Rated</item>
+    </string-array>
+
+    <string name="title_activity_movie_detail">MovieDetailActivity</string>
+</resources>
