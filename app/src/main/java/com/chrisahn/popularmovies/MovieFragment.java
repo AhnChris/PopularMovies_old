@@ -1,6 +1,5 @@
 package com.chrisahn.popularmovies;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -84,6 +83,10 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         });
     }
 
+    // MovieDetailFragment callback for when an item is selected
+    public interface Callback {
+        public void onItemSelected(MovieInfoContainer movieData);
+        }
 
 
     @Override
@@ -104,9 +107,13 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                 // get the movie details and put into movieInfoContainer
                 MovieInfoContainer movieInfoContainer = mMovieAdapter.getItem(position);
                 // Wrap up data to put into intent as extra then start the intent
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                /*Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 intent.putExtra(MOVIE_DATA, movieInfoContainer);
-                startActivity(intent);
+                startActivity(intent);*/
+
+                // Notify Callback when item is selected
+                ((Callback) getActivity())
+                        .onItemSelected(movieInfoContainer);
 
             }
         });

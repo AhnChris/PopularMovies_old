@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
     private MovieInfoContainer mMovieInfoContainer;
+    static final String MOVIE_DATA = "MOVIE_DATA";
 
     @Bind(R.id.movieTitleView) TextView title;
     @Bind(R.id.releaseDateView) TextView releaseDate;
@@ -46,16 +47,18 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
         // Get the intent data from the Bundle that was passed from MovieDetailActivity
         Bundle bundle = getArguments();
-        mMovieInfoContainer = bundle.getParcelable(MovieFragment.MOVIE_DATA);
+        if (bundle != null) {
+            mMovieInfoContainer = bundle.getParcelable(MovieDetailFragment.MOVIE_DATA);
+            // Set views with corresponding values obtained from the Bundle
+            title.setText(mMovieInfoContainer.getOriginalTitle());
+            releaseDate.setText(mMovieInfoContainer.getReleaseDate());
+            voteAverage.setText(mMovieInfoContainer.getVoteAverage()+"/10");
+            plot.setText(mMovieInfoContainer.getOverview());
 
-        // Set views with corresponding values obtained from the Bundle
-        title.setText(mMovieInfoContainer.getOriginalTitle());
-        releaseDate.setText(mMovieInfoContainer.getReleaseDate());
-        voteAverage.setText(mMovieInfoContainer.getVoteAverage()+"/10");
-        plot.setText(mMovieInfoContainer.getOverview());
+            String URL = "http://image.tmdb.org/t/p/w185/"+ mMovieInfoContainer.getPosterPath();
+            Picasso.with(getActivity()).load(URL).error(R.drawable.error_image2).into(posterImage);
+        }
 
-        String URL = "http://image.tmdb.org/t/p/w185/"+ mMovieInfoContainer.getPosterPath();
-        Picasso.with(getActivity()).load(URL).error(R.drawable.error_image2).into(posterImage);
         return rootView;
     }
 }

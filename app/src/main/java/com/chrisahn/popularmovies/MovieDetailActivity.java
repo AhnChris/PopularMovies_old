@@ -14,15 +14,16 @@ public class MovieDetailActivity extends AppCompatActivity {
         // Get intent
         Intent intent = getIntent();
 
-        // sending intent data to MovieDetailFragment
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(MovieFragment.MOVIE_DATA, intent.getExtras().getParcelable(MovieFragment.MOVIE_DATA));
-        MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
-        movieDetailFragment.setArguments(bundle);
+        if (savedInstanceState == null) {
+            // sending intent data to MovieDetailFragment
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MovieDetailFragment.MOVIE_DATA, intent.getExtras().getParcelable(MovieDetailFragment.MOVIE_DATA));
+            MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
+            movieDetailFragment.setArguments(bundle);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container_detail, movieDetailFragment)
-                .commit();
-
+            getSupportFragmentManager().beginTransaction().add(R.id.container_detail, movieDetailFragment)
+                    .commit();
+        }
 
        /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
