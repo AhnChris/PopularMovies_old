@@ -33,6 +33,9 @@ public class MovieFragment extends android.support.v4.app.Fragment {
 
     public  static final String MOVIE_DATA = "MOVIE_DATA";
     private MovieAdapter mMovieAdapter;
+    private int mSortPosition;
+    private static final String SORT_POSITION_KEY = "SORT_POSITION";
+    private boolean spinnerFlag = false;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -56,7 +59,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         // create ArrayAdapter with string array with a customer spinner item layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sort_options,
-                                                R.layout.customer_spinner_item);
+                R.layout.customer_spinner_item);
         // set the custom spinner dropdown layout
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         // set adapter for the spinner
@@ -66,13 +69,13 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    // Most Popular
-                    updateMovie(0);
-                }
-                else if (position == 1) {
-                    // Highest Rated
-                    updateMovie(1);
+                if (!spinnerFlag) {
+                    mSortPosition = position;
+                    updateMovie(mSortPosition);
+                } else {
+                    updateMovie(mSortPosition);
+                    // reset flag
+                    spinnerFlag = false;
                 }
             }
 
@@ -118,16 +121,29 @@ public class MovieFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        // If an instance state exist, extract the sort option we were previously in
+        if (savedInstanceState != null && savedInstanceState.containsKey(SORT_POSITION_KEY)) {
+            mSortPosition = savedInstanceState.getInt(SORT_POSITION_KEY);
+            // set flag to restore previous state
+            spinnerFlag = true;
+        }
 
         return rootView;
     }
 
 
+
     @Override
-    public void onStart() {
-        // Possibly causing a lot of network traffic here
-        //updateMovie(0);
-        super.onStart();
+    public void onSaveInstanceState(Bundle outState) {
+        // Save the sort option that is currently selected
+        outState.putInt(SORT_POSITION_KEY, mSortPosition);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        updateMovie(mSortPosition);
+        super.onResume();
     }
 
     // Helper function to update the movie list (popular/highest rated)
@@ -235,7 +251,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                 StringBuffer buffer = new StringBuffer();
 
                 if (inputStream == null) {
-                    // If inputStream is empty is means there is no response/nothing
+                    // If inputStream is empty it means there is no response/nothing
                     Log.d(LOG_TAG, "inputStream is empty, meaning no response");
                     return null;
                 }
