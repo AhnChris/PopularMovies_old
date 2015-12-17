@@ -56,7 +56,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         // get the menu spinner item
         MenuItem item = menu.findItem(R.id.spinner);
         // set the spinner item to this Spinner
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+        final Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
         // create ArrayAdapter with string array with a customer spinner item layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sort_options,
                 R.layout.customer_spinner_item);
@@ -73,7 +73,9 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                     mSortPosition = position;
                     updateMovie(mSortPosition);
                 } else {
+                    // resume previous sort and set correct spinner text
                     updateMovie(mSortPosition);
+                    spinner.setSelection(mSortPosition);
                     // reset flag
                     spinnerFlag = false;
                 }
