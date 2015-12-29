@@ -1,8 +1,23 @@
+# Android Studio
 .gradle
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+*.iml
+.idea
+
+# OSX files
 .DS_Store
 /build
 /captures
+
+# API Key
 /app/src/main/res/values/Keys.xml
+
+# Built Application files
+*.apk
+*.ap_
+
+# Generated files
+bin/
+gen/
