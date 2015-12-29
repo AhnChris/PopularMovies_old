@@ -12,6 +12,7 @@ public class MovieInfoContainer implements Parcelable {
     private String mReleaseDate;
     private int mVoteAverage;
     private String mOverview;
+    private int mId;
 
     // Default Constructor
     public MovieInfoContainer() {
@@ -57,6 +58,14 @@ public class MovieInfoContainer implements Parcelable {
         mVoteAverage = voteAverage;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -69,6 +78,7 @@ public class MovieInfoContainer implements Parcelable {
         dest.writeString(mReleaseDate);
         dest.writeInt(mVoteAverage);
         dest.writeString(mOverview);
+        dest.writeInt(mId);
     }
 
     // unwrap our data, must be unwrapped in the order it was wrapped in
@@ -78,6 +88,7 @@ public class MovieInfoContainer implements Parcelable {
         mReleaseDate = in.readString();
         mVoteAverage = in.readInt();
         mOverview = in.readString();
+        mId = in.readInt();
     }
 
     // This interface must be implemented. Generates instances of the Parcelable class (in this case

@@ -197,6 +197,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                 String release_date = result.getString("release_date");
                 int vote_average = result.getInt("vote_average");
                 String overview = result.getString("overview");
+                int movie_id = result.getInt("id");
 
                 // Set values
                 infoContainer.setPosterPath(poster_path);
@@ -204,6 +205,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
                 infoContainer.setReleaseDate(release_date);
                 infoContainer.setVoteAverage(vote_average);
                 infoContainer.setOverview(overview);
+                infoContainer.setId(movie_id);
                 // put all set values into our array
                 movieInfoContainer[i] = infoContainer;
                 //movieInfoContainer[i] = new MovieInfoContainer(poster_path, id);
