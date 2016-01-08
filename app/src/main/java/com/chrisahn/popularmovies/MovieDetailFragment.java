@@ -12,12 +12,17 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,13 +80,39 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
         return rootView;
     }
 
-    public class FetchTrailerReview extends AsyncTask<Integer, Void, Void> {
+    public class FetchTrailerReview extends AsyncTask<Integer, Void, ArrayList<String>> {
 
         private final String LOG_TAG = FetchTrailerReview.class.getSimpleName();
 
 
 
-        protected Void doInBackground(Integer... params) {
+        // helper function to grab trailer and review
+        private ArrayList<String> getJsonData(String jsonStr) throws JSONException {
+
+            ArrayList<String> arrayList = new ArrayList<String>();
+
+            JSONObject json = new JSONObject(jsonStr);
+            JSONObject trailers = json.getJSONObject("trailers");
+            JSONObject reviews = json.getJSONObject("reviews");
+
+            JSONArray youtube = trailers.getJSONArray("youtube");
+            JSONObject youtubeArray = youtube.getJSONObject(0);
+            String youtubeSource = youtubeArray.getString("source");
+            Log.v(LOG_TAG, "youtube source: " + youtubeSource);
+
+            JSONArray results = reviews.getJSONArray("results");
+            JSONObject resultsArray = results.getJSONObject(0);
+            String content = resultsArray.getString("content");
+            Log.v(LOG_TAG, "content review: " + content);
+
+            arrayList.add(youtubeSource);
+            arrayList.add(content);
+            return arrayList;
+        }
+
+
+
+        protected ArrayList<String> doInBackground(Integer... params) {
 
             if (params.length == 0) {
                 return null;
@@ -95,7 +126,6 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
             try {
                 // Build URL
                 final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
-                final String ID_PARAM = "id";
                 final String API_PARAM = "api_key";
                 final String APPEND_PARAM = "append_to_response";
 
@@ -132,6 +162,7 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
                 // non-empty response
                 JsonTrailerReviewStr = stringBuffer.toString();
+                Log.v(LOG_TAG, "JSON RESPONSE: " + JsonTrailerReviewStr);
 
 
             } catch (final IOException e) {
@@ -153,7 +184,15 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
                     Log.e(LOG_TAG, "Error in closing stream ", e);
                 }
             }
+
+            try {
+                return getJsonData(JsonTrailerReviewStr);
+            } catch (final JSONException e) {
+                Log.e(LOG_TAG, "JSON Exception", e);
+            }
             return null;
         }
+
+
     }
 }
