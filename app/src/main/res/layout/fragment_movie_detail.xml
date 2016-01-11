@@ -62,5 +62,29 @@
         android:layout_marginTop="32dp"
         android:textSize="14dp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Trailer"
+        android:textSize="14dp"
+        android:id="@+id/trailerView"
+        android:layout_below="@+id/plotView"
+        android:layout_alignLeft="@+id/posterImageView"
+        android:layout_alignStart="@+id/posterImageView"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Review"
+        android:id="@+id/reviewTextView"
+        android:textSize="14dp"
+        android:layout_below="@+id/trailerView"
+        android:layout_alignLeft="@+id/posterImageView"
+        android:layout_alignStart="@+id/posterImageView"
+        android:layout_marginTop="10dp"/>
+
 </RelativeLayout>
 </ScrollView>

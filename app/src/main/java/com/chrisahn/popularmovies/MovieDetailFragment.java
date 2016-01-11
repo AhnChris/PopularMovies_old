@@ -1,5 +1,6 @@
 package com.chrisahn.popularmovies;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,12 +33,16 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
     private MovieInfoContainer mMovieInfoContainer;
     static final String MOVIE_DATA = "MOVIE_DATA";
+    private String mSource;
+    private static final String LOG_TAG = MovieDetailFragment.class.getSimpleName();
 
     @Bind(R.id.movieTitleView) TextView title;
     @Bind(R.id.releaseDateView) TextView releaseDate;
     @Bind(R.id.voteAverageView) TextView voteAverage;
     @Bind(R.id.posterImageView) ImageView posterImage;
     @Bind(R.id.plotView) TextView plot;
+    @Bind(R.id.trailerView) TextView trailer;
+    @Bind(R.id.reviewTextView) TextView review;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -75,6 +80,18 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
             FetchTrailerReview fetchTrailerReview = new FetchTrailerReview();
             fetchTrailerReview.execute(mMovieInfoContainer.getId());
+
+            trailer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse("http://www.youtube.com/watch").buildUpon()
+                            .appendQueryParameter("v", mSource)
+                            .build();
+                    Log.v(LOG_TAG, uri.toString());
+
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
+            });
         }
 
         return rootView;
@@ -193,6 +210,18 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
 
+            mSource = strings.get(0);
+
+            if (strings.get(1) == null) {
+                // no reviews update textview with "No reviews available"
+                review.setText("No reviews available.");
+            } else {
+                // if there is a review update textview with the review
+                review.setText(strings.get(1));
+            }
+        }
     }
 }
