@@ -1,5 +1,6 @@
 package com.chrisahn.popularmovies;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -84,17 +85,26 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
             trailer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Uri uri = Uri.parse("http://www.youtube.com/watch").buildUpon()
-                            .appendQueryParameter("v", mSource)
-                            .build();
-                    Log.v(LOG_TAG, uri.toString());
-
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    playTrailer(mSource);
                 }
             });
         }
 
         return rootView;
+    }
+
+    // function to launch youtube intent
+    public void playTrailer(String source) {
+        try {
+            // launch youtube app if available
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + source));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // if there is no youtube app available, launch with browser
+            Intent intent = new Intent (Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + source));
+            startActivity(intent);
+        }
     }
 
     public class FetchTrailerReview extends AsyncTask<Integer, Void, ArrayList<String>> {
