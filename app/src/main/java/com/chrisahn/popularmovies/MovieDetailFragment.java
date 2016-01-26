@@ -223,7 +223,12 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
 
-            mSource = strings.get(0);
+            if (strings.get(0) != null) {
+                mSource = strings.get(0);
+            }
+            else {
+                Log.e(LOG_TAG, "youtube source is empty");
+            }
 
             if (strings.get(1) == null) {
                 // no reviews update textview with "No reviews available"
