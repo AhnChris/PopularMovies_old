@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -85,7 +86,13 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
             trailer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    playTrailer(mSource);
+                    if (mSource != null) {
+                        playTrailer(mSource);
+                    }
+                    else {
+                        // if there is no youtube source Toast a "trailer unavailable"
+                        Toast.makeText(getActivity(), "Trailer Unavailable", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -123,14 +130,30 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
             JSONObject reviews = json.getJSONObject("reviews");
 
             JSONArray youtube = trailers.getJSONArray("youtube");
-            JSONObject youtubeArray = youtube.getJSONObject(0);
-            String youtubeSource = youtubeArray.getString("source");
-            Log.v(LOG_TAG, "youtube source: " + youtubeSource);
+            String youtubeSource = null;
+            if (!youtube.isNull(0)) {
+                // if there is a youtube source value
+                JSONObject youtubeArray = youtube.getJSONObject(0);
+                youtubeSource = youtubeArray.getString("source");
+                Log.v(LOG_TAG, "youtube source: " + youtubeSource);
+            }
+            else {
+                Log.v(LOG_TAG, "youtube source is empty");
+                youtubeSource = "empty";
+            }
 
             JSONArray results = reviews.getJSONArray("results");
-            JSONObject resultsArray = results.getJSONObject(0);
-            String content = resultsArray.getString("content");
-            Log.v(LOG_TAG, "content review: " + content);
+            String content = null;
+            if (!results.isNull(0)) {
+                // if there is a review
+                JSONObject resultsArray = results.getJSONObject(0);
+                content = resultsArray.getString("content");
+                Log.v(LOG_TAG, "content review: " + content);
+            }
+            else {
+                Log.v(LOG_TAG, "content is empty");
+                content = "empty";
+            }
 
             arrayList.add(youtubeSource);
             arrayList.add(content);
@@ -223,14 +246,16 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
 
-            if (strings.get(0) != null) {
+            if (!strings.get(0).equals("empty")) {
+                // there is a youtube source
                 mSource = strings.get(0);
             }
             else {
                 Log.e(LOG_TAG, "youtube source is empty");
+                mSource = null;
             }
 
-            if (strings.get(1) == null) {
+            if (strings.get(1).equals("empty")) {
                 // no reviews update textview with "No reviews available"
                 review.setText("No reviews available.");
             } else {
