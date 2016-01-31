@@ -82,6 +82,7 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
 
             FetchTrailerReview fetchTrailerReview = new FetchTrailerReview();
             fetchTrailerReview.execute(mMovieInfoContainer.getId());
+            trailer.setText("Trailer");
 
             trailer.setOnClickListener(new View.OnClickListener() {
                 @Override
