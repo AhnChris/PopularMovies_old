@@ -84,5 +84,15 @@
         android:layout_alignStart="@+id/posterImageView"
         android:layout_marginTop="10dp"/>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/favoriteButton"
+        android:src="@drawable/fav_btn_selector"
+        android:layout_alignTop="@+id/releaseDateView"
+        android:layout_alignRight="@+id/plotView"
+        android:layout_alignEnd="@+id/plotView"
+        android:background="@null"/>
+
 </RelativeLayout>
 </ScrollView>
