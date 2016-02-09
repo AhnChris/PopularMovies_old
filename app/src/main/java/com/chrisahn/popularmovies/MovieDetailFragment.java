@@ -1,7 +1,9 @@
 package com.chrisahn.popularmovies;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chrisahn.popularmovies.data.FavoriteProvider;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,6 +48,7 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
     @Bind(R.id.plotView) TextView plot;
     @Bind(R.id.trailerView) TextView trailer;
     @Bind(R.id.reviewTextView) TextView review;
+    @Bind(R.id.favoriteButton) ImageView favoriteButton;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -64,7 +68,7 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-        // Using Butterknife here to make it a little cleaner in this block
+        // Inject views
         ButterKnife.bind(this, rootView);
 
         // Get the intent data from the Bundle that was passed from MovieDetailActivity
@@ -89,16 +93,41 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
                 public void onClick(View v) {
                     if (mSource != null) {
                         playTrailer(mSource);
-                    }
-                    else {
+                    } else {
                         // if there is no youtube source Toast a "trailer unavailable"
                         Toast.makeText(getActivity(), "Trailer Unavailable", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            // Testing favorite button
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!v.isSelected()) {
+                        v.setSelected(true);
+                    }
+                    else {
+                        v.setSelected(false);
                     }
                 }
             });
         }
 
         return rootView;
+    }
+
+    // helper function to find favorite movie in the database
+    public boolean isFavorite(Context context, MovieInfoContainer movieInfoContainer) {
+        Cursor c = context.getContentResolver()
+                .query(FavoriteProvider.Favorites.withMovieId(movieInfoContainer.getId()),
+                        null, null, null, null);
+
+        // if query does not return the position then it is not in the db
+        if (c == null)
+            return true;
+
+        return false;
     }
 
     // function to launch youtube intent
