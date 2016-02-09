@@ -39,13 +39,14 @@ public class FavoriteProvider {
         public static final Uri CONTENT_URI = buildUri(Path.FAVORITES);
 
         // @InexactContentUri is used for a Uri that is created based on some kind of value
+
         @InexactContentUri(
                 path = Path.FAVORITES + "/#",
-                name = "FAVORITE_ID",
+                name = "MOVIE_ID",
                 type = "vnd.android.cursor.item/favorite",
-                whereColumn = FavoriteColumns._ID,
+                whereColumn = FavoriteColumns.MOVIE_ID,
                 pathSegment = 1)
-        public static Uri withId (long id) {
+        public static Uri withMovieId (long id) {
             return buildUri(Path.FAVORITES, String.valueOf(id));
         }
     }
