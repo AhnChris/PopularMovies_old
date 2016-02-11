@@ -27,6 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.chrisahn.popularmovies.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.chrisahn.popularmovies.data.FavoriteProvider"
+            android:name="com.chrisahn.popularmovies.data.generated.FavoriteProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
