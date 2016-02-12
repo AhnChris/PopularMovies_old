@@ -1,7 +1,7 @@
 package com.chrisahn.popularmovies;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chrisahn.popularmovies.data.FavoriteColumns;
 import com.chrisahn.popularmovies.data.FavoriteProvider;
 import com.squareup.picasso.Picasso;
 
@@ -100,15 +101,65 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
                 }
             });
 
-            // Testing favorite button
+            favoriteButton.setSelected(isFavorite());
+
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!v.isSelected()) {
+                    Cursor c;
+
+                    // not in db
+                    if (!v.isSelected()){
+                        // onClick change to filled star image
                         v.setSelected(true);
+                        if (!getActivity().getContentResolver().query(
+                                FavoriteProvider.Favorites.withMovieId(mMovieInfoContainer.getId()),
+                                null, null, null, null).moveToFirst()) {
+                            // insert movie id and posterpath
+                            ContentValues cv = new ContentValues();
+                            cv.put(FavoriteColumns.MOVIE_ID, mMovieInfoContainer.getId());
+                            cv.put(FavoriteColumns.POSTER_PATH, mMovieInfoContainer.getPosterPath());
+                            getActivity().getContentResolver()
+                                    .insert(FavoriteProvider.Favorites.CONTENT_URI, cv);
+                            // log action if insert was successful
+                            c = getActivity().getContentResolver().query(
+                                    FavoriteProvider.Favorites.withMovieId(mMovieInfoContainer.getId()),
+                                    null, null, null, null);
+                            if (c.moveToFirst()) {
+                                Log.v(LOG_TAG, "INSERT SUCCESS");
+                                c.close();
+                            }
+                            else if(!c.moveToFirst()) {
+                                Log.v(LOG_TAG, "INSERT UNSUCCESSFUL");
+                                c.close();
+                            }
+                        }
                     }
-                    else {
+                    else if (v.isSelected()){
+                        // onClick change to empty star image
                         v.setSelected(false);
+                        c = getActivity().getContentResolver().query(
+                                FavoriteProvider.Favorites.withMovieId(mMovieInfoContainer.getId()),
+                                null, null, null, null);
+                        // check to see if movie is in the db
+                        if (c.moveToFirst()) {
+                            // movie is in db, perform delete
+                            getActivity().getContentResolver()
+                                    .delete(FavoriteProvider.Favorites.withMovieId(mMovieInfoContainer.getId()),
+                                            null, null);
+                            c.close();
+                            c = getActivity().getContentResolver().query(
+                                    FavoriteProvider.Favorites.withMovieId(mMovieInfoContainer.getId()),
+                                    null, null, null, null);
+                            if (!c.moveToFirst()) {
+                                Log.v(LOG_TAG, "DELETE SUCCESS");
+                                c.close();
+                            }
+                            else if (c.moveToFirst()) {
+                                Log.v(LOG_TAG, "DELETE UNSUCCESSFUL");
+                                c.close();
+                            }
+                        }
                     }
                 }
             });
@@ -118,16 +169,16 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
     }
 
     // helper function to find favorite movie in the database
-    public boolean isFavorite(Context context, MovieInfoContainer movieInfoContainer) {
-        Cursor c = context.getContentResolver()
-                .query(FavoriteProvider.Favorites.withMovieId(movieInfoContainer.getId()),
+    public boolean isFavorite() {
+        Cursor cursor = getActivity().getContentResolver()
+                .query(FavoriteProvider.Favorites.withMovieId(mMovieInfoContainer.getId()),
                         null, null, null, null);
 
-        // if query does not return the position then it is not in the db
-        if (c == null)
-            return true;
+        // if false, then it is not in the db
+        if (!cursor.moveToFirst())
+            return false;
 
-        return false;
+        return true;
     }
 
     // function to launch youtube intent
@@ -295,3 +346,4 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
         }
     }
 }
+
