@@ -8,13 +8,24 @@ public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
-    public void testInsert() throws Throwable {
+    public void testInsertDelete() throws Throwable {
         ContentValues cv = new ContentValues();
         cv.put(FavoriteColumns.MOVIE_ID, 12345);
         cv.put(FavoriteColumns.POSTER_PATH, "/posterpath");
 
+        getContext().getContentResolver().delete(FavoriteProvider.Favorites.CONTENT_URI, null, null);
+        Cursor c = getContext().getContentResolver().query(FavoriteProvider.Favorites.CONTENT_URI,
+                null, null, null, null);
+        assertEquals(0, c.getCount());
+        c.close();
+
+        c = getContext().getContentResolver().query(FavoriteProvider.Favorites.withMovieId(12345),
+                null, null, null, null);
+        assertFalse(c.moveToFirst());
+        c.close();
+
         getContext().getContentResolver().insert(FavoriteProvider.Favorites.CONTENT_URI, cv);
-        Cursor c = getContext().getContentResolver().query(FavoriteProvider.Favorites.withMovieId(12345),
+        c = getContext().getContentResolver().query(FavoriteProvider.Favorites.withMovieId(12345),
                 null, null, null, null);
         assertTrue(c.moveToFirst());
 
@@ -24,5 +35,11 @@ public class TestDb extends AndroidTestCase {
         String s = c.getString(c.getColumnIndex(FavoriteColumns.POSTER_PATH));
         assertEquals("/posterpath", s);
 
+        c.close();
+
+        getContext().getContentResolver().delete(FavoriteProvider.Favorites.withMovieId(12345), null, null);
+        c = getContext().getContentResolver().query(FavoriteProvider.Favorites.withMovieId(12345),
+                    null, null, null, null);
+        assertFalse(c.moveToFirst());
     }
 }
