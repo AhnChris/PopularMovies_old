@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Chris on 10/20/2015.
@@ -22,7 +22,7 @@ public class MovieAdapter extends ArrayAdapter<MovieInfoContainer>{
     private Context mContext;
 
     // constructor
-    public MovieAdapter(Context context, List<MovieInfoContainer> movieInfoContainer) {
+    public MovieAdapter(Context context, ArrayList<MovieInfoContainer> movieInfoContainer) {
         super(context, 0, movieInfoContainer);
         mContext = context;
     }
