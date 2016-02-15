@@ -102,6 +102,7 @@ public class MovieDetailFragment extends android.support.v4.app.Fragment {
             });
 
             favoriteButton.setSelected(isFavorite());
+            favoriteButton.setVisibility(View.VISIBLE);
 
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override

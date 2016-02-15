@@ -92,7 +92,8 @@
         android:layout_alignTop="@+id/releaseDateView"
         android:layout_alignRight="@+id/plotView"
         android:layout_alignEnd="@+id/plotView"
-        android:background="@null"/>
+        android:background="@null"
+        android:visibility="gone"/>
 
 </RelativeLayout>
 </ScrollView>
