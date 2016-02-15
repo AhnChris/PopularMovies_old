@@ -57,6 +57,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((Callback) getActivity()).onSpinnerItemSelected(position);
                 if (!spinnerFlag) {
                     mSortPosition = position;
                     updateMovie(mSortPosition);
@@ -79,6 +80,7 @@ public class MovieFragment extends android.support.v4.app.Fragment {
     // MovieDetailFragment callback for when an item is selected
     public interface Callback {
         public void onItemSelected(MovieInfoContainer movieData);
+        public void onSpinnerItemSelected(int position);
         }
 
 

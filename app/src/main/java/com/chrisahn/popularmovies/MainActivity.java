@@ -8,11 +8,16 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
 
     private boolean isTablet;
     private final static String MOVIEDETAILFRAGMENT_TAG = "MDFTAG";
+    private final static String MOVIEFRAGMENT_TAG = "MFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container_main, new MovieFragment(), MOVIEFRAGMENT_TAG)
+                .commit();
 
         if (findViewById(R.id.container_detail) != null) {
             // If we find this view, then we are on a tablet device
@@ -51,6 +56,22 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             Intent intent = new Intent(this, MovieDetailActivity.class);
             intent.putExtra(MovieDetailFragment.MOVIE_DATA, movieData);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onSpinnerItemSelected(int position) {
+        if (position == 2) {
+            // inflate FavoriteFragment
+        }
+        else {
+            // replace the fragment only if it is not already in the activity
+            MovieFragment movieFragment = (MovieFragment) getSupportFragmentManager().findFragmentByTag(MOVIEFRAGMENT_TAG);
+            if (!movieFragment.isAdded()) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_main, new MovieFragment(), MOVIEFRAGMENT_TAG)
+                        .commit();
+            }
         }
     }
 }
