@@ -15,9 +15,12 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container_main, new MovieFragment(), MOVIEFRAGMENT_TAG)
-                .commit();
+        if (savedInstanceState == null) {
+            // if building from new, place MovieFragment with tag in the container
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container_main, new MovieFragment(), MOVIEFRAGMENT_TAG)
+                    .commit();
+        }
 
         if (findViewById(R.id.container_detail) != null) {
             // If we find this view, then we are on a tablet device
