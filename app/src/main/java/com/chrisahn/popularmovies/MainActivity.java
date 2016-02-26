@@ -9,6 +9,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     private boolean isTablet;
     private final static String MOVIEDETAILFRAGMENT_TAG = "MDFTAG";
     private final static String MOVIEFRAGMENT_TAG = "MFTAG";
+    private final static String MOVIEFAVORITEFRAGMENT_TAG = "MFFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container_main, new MovieFragment(), MOVIEFRAGMENT_TAG)
                     .commit();
+
         }
 
         if (findViewById(R.id.container_detail) != null) {
@@ -66,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     public void onSpinnerItemSelected(int position) {
         if (position == 2) {
             // inflate FavoriteFragment
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container_main, new MovieFavoriteFragment())
+                    .commit();
         }
         else {
             // replace the fragment only if it is not already in the activity
