@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements MovieFragment.Callback{
+public class MainActivity extends AppCompatActivity
+        implements MovieFragment.Callback, MovieFavoriteFragment.Callback{
 
     private boolean isTablet;
     private final static String MOVIEDETAILFRAGMENT_TAG = "MDFTAG";
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         if (position == 2) {
             // inflate FavoriteFragment
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container_main, new MovieFavoriteFragment())
+                    .replace(R.id.container_main, new MovieFavoriteFragment(), MOVIEFAVORITEFRAGMENT_TAG)
                     .commit();
         }
         else {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
             MovieFragment movieFragment = (MovieFragment) getSupportFragmentManager().findFragmentByTag(MOVIEFRAGMENT_TAG);
             if (!movieFragment.isAdded()) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container_main, new MovieFragment(), MOVIEFRAGMENT_TAG)
+                        .replace(R.id.container_main, new MovieFragment())
                         .commit();
             }
         }
